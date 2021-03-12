@@ -24,11 +24,14 @@ input_size = 2
 output_size = 1
 
 model = tf.keras.Sequential([
-    tf.keras.layers.Dense(output_size)
+    tf.keras.layers.Dense(output_size,
+                          kernel_initializer=tf.random_uniform_initializer(minval=-0.1),
+                          bias_initializer=tf.random_uniform_initializer(minval=-0.1))
 
 ])
 
-model.compile(optimizer='sgd', loss='mean_squared_error')
+custom_optimizer = tf.keras.optimizers.SGD(learning_rate=0.02)
+model.compile(optimizer=custom_optimizer, loss='mean_squared_error')
 model.fit(training_data['inputs'], training_data['targets'], epochs=100, verbose=1)
 
 # Extract the weights and bias
